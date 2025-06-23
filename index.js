@@ -1,23 +1,25 @@
-const express = require('express');
-const router = express.Router();
+import mongoose from 'mongoose';
 
-// Example controller methods
-const getHomePage = (req, res) => {
-    res.render('index'); // Render the main HTML view
-};
-
-const getData = async (req, res) => {
-    try {
-        // Logic to fetch data from MongoDB
-        const data = await SomeModel.find(); // Replace SomeModel with your actual model
-        res.json(data);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching data' });
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
-};
+});
 
-// Exporting the controller methods
-module.exports = {
-    getHomePage,
-    getData
-};
+const User = mongoose.model('User', userSchema);
+
+export { User };
